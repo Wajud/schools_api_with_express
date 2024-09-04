@@ -1,0 +1,4 @@
+Schools API will have endpoints for
+## courses
+## lecturers
+## extracurricular activities
