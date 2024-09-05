@@ -1,6 +1,6 @@
 import courses from "../data/courses.json" assert { type: "json" };
 import { v4 as uuidv4 } from "uuid";
-import { updateCouresFile } from "../utilities.js";
+import { updateDataFile, coursesFilePath } from "../utilities.js";
 
 export const findAll = () => {
   return new Promise((resolve, reject) => {
@@ -23,7 +23,7 @@ export const create = (course) => {
   return new Promise(async (resolve, reject) => {
     const newCourse = { id: uuidv4(), ...course };
     courses.push(newCourse);
-    await updateCouresFile(courses);
+    await updateDataFile(coursesFilePath, courses);
     resolve(newCourse);
   });
 };
@@ -43,7 +43,7 @@ export const update = (courseId, sentData) => {
         compulsory: sentData.compulsory || courses[courseIndex].compulsory,
       };
       courses[courseIndex] = updatedCourse;
-      await updateCouresFile(courses);
+      await updateDataFile(coursesFilePath, courses);
       resolve(updatedCourse);
     } else {
       reject(`Course with id ${courseId} not found`);
@@ -56,7 +56,7 @@ export const remove = (courseId) => {
     const courseIndex = courses.findIndex((course) => course.id === courseId);
     if (courseIndex !== -1) {
       courses.splice(courseIndex, 1);
-      await updateCouresFile(courses);
+      await updateDataFile(coursesFilePath, courses);
       resolve(`Course with id ${courseId} successfully deleted`);
     } else {
       reject(`Course with id ${courseId} not found`);
